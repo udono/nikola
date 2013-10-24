@@ -56,11 +56,12 @@ class PostList(Directive):
 
     The following not required options are recognized:
 
-    ``first`` : integer
+    ``start`` : integer
         The index of the first post to show.
+        A value of ``-3`` will show the last three posts.
         Defaults to None.
 
-    ``last`` : integer
+    ``stop`` : integer
         The index of the last post to show.
         A value of ``-1`` will show every post, but not the last in the
         post-list.
@@ -96,8 +97,8 @@ class PostList(Directive):
 
     """
     option_spec = {
-        'first': int,
-        'last': int,
+        'start': int,
+        'stop': int,
         'reverse': directives.flag,
         'tags': directives.unchanged,
         'slugs': directives.unchanged,
@@ -108,8 +109,8 @@ class PostList(Directive):
     }
 
     def run(self):
-        first = self.options.get('first')
-        last = self.options.get('last')
+        start = self.options.get('start')
+        stop = self.options.get('stop')
         reverse = self.options.get('reverse', False)
         tags = self.options.get('tags')
         tags = [t.strip().lower() for t in tags.split(',')] if tags else []
@@ -127,7 +128,7 @@ class PostList(Directive):
         else:
             timeline = [p for p in self.site.timeline if p.use_in_feeds]
 
-        for post in timeline[first:last:step]:
+        for post in timeline[start:stop:step]:
             if tags:
                 cont = True
                 for tag in tags:
