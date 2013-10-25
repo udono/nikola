@@ -30,6 +30,7 @@ import uuid
 from docutils import nodes
 from docutils.parsers.rst import Directive, directives
 
+from nikola import utils
 from nikola.plugin_categories import RestExtension
 
 
@@ -117,7 +118,7 @@ class PostList(Directive):
         slugs = self.options.get('slugs')
         slugs = [s.strip() for s in slugs.split(',')] if slugs else []
         show_all = self.options.get('all', False)
-        lang = self.options.get('lang', self.site.current_lang())
+        lang = self.options.get('lang', utils.LocaleBorg().current_lang)
         template = self.options.get('template', 'post_list_directive.tmpl')
         post_list_id = self.options.get('id', 'post_list_' + uuid.uuid4().hex)
 
